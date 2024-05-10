@@ -3,8 +3,14 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useGetSuccursaleQuery } from "../store/api/MainApi";
 import { Succursale as SS } from "../interfaces/mainInterfaces";
+import { Dialog, IconButton } from "@mui/material";
+import { CgClose } from "react-icons/cg";
+import Surcusale from "../components/SuccusaleForm";
+import { useState } from "react";
 const Succursale = () => {
 	const { data, isSuccess } = useGetSuccursaleQuery();
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
 	const columns: GridColDef<SS[number]>[] = [
 		{ field: "id", headerName: "ID", width: 90 },
 		{
@@ -45,8 +51,24 @@ const Succursale = () => {
 	return (
 		<div>
 			<div className="flex justify-end  ">
-				<button className="px-4 py-2 bg-blue-500 text-white">Ajouter</button>
+				<button
+					onClick={() => setIsOpen(true)}
+					className="px-4 py-2 bg-blue-500 text-white">
+					Ajouter
+				</button>
 			</div>
+			<Dialog open={isOpen} fullWidth>
+				<div className="p-4">
+					<div className="flex justify-end">
+						<IconButton onClick={() => setIsOpen(false)}>
+							<CgClose />
+						</IconButton>
+					</div>
+					<div className="w-full">
+						<Surcusale />
+					</div>
+				</div>
+			</Dialog>
 			<div className="my-5">
 				{isSuccess && (
 					<DataGrid

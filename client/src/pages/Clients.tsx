@@ -1,14 +1,20 @@
 /** @format */
 
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useGetClientsQuery } from "../store/api/MainApi";
+import {
+	useDeleteClientMutation,
+	useGetClientsQuery,
+} from "../store/api/MainApi";
 import { Client as SS } from "../interfaces/mainInterfaces";
 import { Dialog, IconButton } from "@mui/material";
 import { useState } from "react";
 import ClientForm from "../components/ClientForm";
 import { CgClose } from "react-icons/cg";
+import { BiPencil, BiTrash } from "react-icons/bi";
 const Clients = () => {
-	const { data, isSuccess } = useGetClientsQuery();
+	const { data, isSuccess, refetch } = useGetClientsQuery();
+	const [Delete] = useDeleteClientMutation();
+
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const columns: GridColDef<SS[number]>[] = [
 		{ field: "id", headerName: "ID", width: 90 },
@@ -42,10 +48,26 @@ const Clients = () => {
 			headerName: "Email",
 			width: 200,
 		},
+
 		{
-			field: "code_postal",
-			headerName: "Code postal",
-			width: 180,
+			field: "Action",
+			renderCell: (row) => {
+				const id = row.id;
+				return (
+					<div className="flex gap-4 pr-4">
+						<IconButton
+							onClick={() => {
+								Delete(id as unknown as number);
+								refetch();
+							}}>
+							<BiTrash />
+						</IconButton>
+						<IconButton>
+							<BiPencil />
+						</IconButton>
+					</div>
+				);
+			},
 		},
 	];
 	return (

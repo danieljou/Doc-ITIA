@@ -10,7 +10,7 @@ import {
 	useGetClientsQuery,
 } from "../store/api/MainApi";
 
-const ClientForm = () => {
+const Surcusale = () => {
 	const { refetch } = useGetClientsQuery();
 	// const searchParams = new URLSearchParams(location.search);
 	// const next = searchParams.get("next") || "";
@@ -54,8 +54,7 @@ const ClientForm = () => {
 
 	return (
 		<div>
-			<div className="text-center text-2xl">Formulaire client</div>
-
+			<div className="text-center text-2xl">Formulaire succusale</div>
 			<div
 				className="space-y-4 md:space-y-6"
 				onSubmit={() => formik.handleSubmit()}>
@@ -249,4 +248,4 @@ const ClientForm = () => {
 	);
 };
 
-export default ClientForm;
+export default Surcusale;

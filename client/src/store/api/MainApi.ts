@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { BACKEND_API_URL } from "../../utils/env";
 import { initialState } from "../slices/AuthSlice";
-import { Succursale } from "../../interfaces/mainInterfaces";
+import { Client, Succursale } from "../../interfaces/mainInterfaces";
 
 // import { store } from "../store";
 
@@ -27,15 +27,23 @@ export const MainApi = createApi({
 	}),
 
 	endpoints: (builder) => ({
-		// CreateArticle: builder.mutation({
-		// 	// query: (artcicle: ArticleCreate) => {
-		// 	// 	return {
-		// 	// 		url: "create_article/",
-		// 	// 		method: "POST",
-		// 	// 		body: artcicle,
-		// 	// 	};
-		// 	// },
-		// }),
+		CreateClient: builder.mutation({
+			query: (data: Omit<Client, "id">) => {
+				return {
+					url: "clients/",
+					method: "POST",
+					body: data,
+				};
+			},
+		}),
+		DeleteClient: builder.mutation({
+			query: (id: number) => {
+				return {
+					url: `clients/${id}/`,
+					method: "DELETE",
+				};
+			},
+		}),
 		getSuccursale: builder.query<Succursale, void>({
 			query: () => "succursales/",
 		}),
@@ -45,4 +53,9 @@ export const MainApi = createApi({
 	}),
 });
 
-export const { useGetSuccursaleQuery, useGetClientsQuery } = MainApi;
+export const {
+	useGetSuccursaleQuery,
+	useGetClientsQuery,
+	useCreateClientMutation,
+	useDeleteClientMutation,
+} = MainApi;

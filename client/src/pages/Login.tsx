@@ -21,9 +21,9 @@ const Login = () => {
 
 	useEffect(() => {
 		if (isLogin === true) {
-			navigate("/");
+			// navigate("/");
 		}
-	}, [isLogin, navigate]);
+	}, []);
 
 	const dispatch = useAppDispatch();
 	// const searchParams = new URLSearchParams(location.search);
@@ -71,7 +71,7 @@ const Login = () => {
 			localStorage.setItem("WD_USER", JSON.stringify(payload));
 			dispatch(loginSuccess(payload));
 
-			navigate("/");
+			navigate("/dash");
 			// await storeToken(payload);
 		} else {
 			const ErrorData = res?.error as RootLoginError;
