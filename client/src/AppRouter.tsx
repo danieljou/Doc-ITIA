@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import DashHome from "./pages/DashHome";
 import Clients from "./pages/Clients";
 import Succursale from "./pages/Succursale";
+import Asssurences from "./pages/Assurences";
 
 const AppRouter = () => {
 	return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
 				<Route path="dash" Component={Dashboard}>
 					<Route index Component={DashHome} />
 					<Route path="succursale" Component={Succursale} />
+					<Route path="assurances" Component={Asssurences} />
 					<Route path="clients" Component={Clients} />
 				</Route>
 			</Routes>

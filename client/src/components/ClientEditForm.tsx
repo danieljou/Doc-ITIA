@@ -6,16 +6,16 @@ import { CgSpinner } from "react-icons/cg";
 import toast from "react-hot-toast";
 import { Client } from "../interfaces/mainInterfaces";
 import {
-	useCreateClientMutation,
 	useGetClientsQuery,
+	useUpdateClientMutation,
 } from "../store/api/MainApi";
 
-const ClientForm = () => {
+const ClientEditForm = ({ client }: { client: Client }) => {
 	const { refetch } = useGetClientsQuery();
 	// const searchParams = new URLSearchParams(location.search);
 	// const next = searchParams.get("next") || "";
 
-	const [Create, { isLoading }] = useCreateClientMutation();
+	const [Update, { isLoading }] = useUpdateClientMutation();
 
 	const validationSchema = yup.object().shape({
 		adresse: yup.string().required("Ce champs est requis"),
@@ -26,31 +26,32 @@ const ClientForm = () => {
 		pays: yup.string().required("Ce champs est requis"),
 		telephone: yup.string().required("Ce champs est requis"),
 		ville: yup.string().required("Ce champs est requis"),
-		// username: yup.string().required("Le nom d'utilisateur est requis"),
-		// password: yup.string().required("Le mot de passe est requis"),
 	});
 
 	const formik = useFormik<Omit<Client, "id">>({
 		initialValues: {
-			adresse: "",
-			code_postal: "",
-			email: "",
-			nom: "",
-			prenom: "",
-			pays: "",
+			adresse: client.adresse,
+			code_postal: client.code_postal,
+			email: client.email,
+			nom: client.nom,
+			prenom: client.prenom,
+			pays: client.pays,
 			succursale: 1,
-			telephone: "",
-			ville: "",
+			telephone: client.telephone,
+			ville: client.ville,
 		},
 		validationSchema: validationSchema,
-		onSubmit: (values) => handleSubmit(values),
+		onSubmit: (values) => {
+			const b: Client = { ...values, id: client.id };
+			handleSubmit(b);
+		},
 	});
-	const handleSubmit = async (values: Omit<Client, "id">) => {
-		const res = await Create(values);
+	const handleSubmit = async (values: Client) => {
+		const res = await Update(values);
 		console.log("RESPONSE ", res);
 
 		if ("data" in res) {
-			toast.success("Successfully ADDED");
+			toast.success("Updated successfully");
 			refetch();
 			// await storeToken(payload);
 		} else {
@@ -62,7 +63,7 @@ const ClientForm = () => {
 
 	return (
 		<div>
-			<div className="text-center text-2xl">Formulaire client</div>
+			<div className="text-center text-2xl">Modification client</div>
 
 			<div
 				className="space-y-4 md:space-y-6"
@@ -257,4 +258,4 @@ const ClientForm = () => {
 	);
 };
 
-export default ClientForm;
+export default ClientEditForm;

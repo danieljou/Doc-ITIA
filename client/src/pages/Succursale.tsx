@@ -1,15 +1,20 @@
 /** @format */
 
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useGetSuccursaleQuery } from "../store/api/MainApi";
+import {
+	useDeleteSurcusalleMutation,
+	useGetSuccursaleQuery,
+} from "../store/api/MainApi";
 import { Succursale as SS } from "../interfaces/mainInterfaces";
 import { Dialog, IconButton } from "@mui/material";
-import { CgClose } from "react-icons/cg";
+import { CgClose, CgEye, CgSpinner } from "react-icons/cg";
 import Surcusale from "../components/SuccusaleForm";
 import { useState } from "react";
+import { BiPencil, BiTrash } from "react-icons/bi";
 const Succursale = () => {
-	const { data, isSuccess } = useGetSuccursaleQuery();
+	const { data, isSuccess, isLoading, refetch } = useGetSuccursaleQuery();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [Delete] = useDeleteSurcusalleMutation();
 
 	const columns: GridColDef<SS[number]>[] = [
 		{ field: "id", headerName: "ID", width: 90 },
@@ -41,11 +46,30 @@ const Succursale = () => {
 			type: "number",
 			width: 200,
 		},
+
 		{
-			field: "code_postal",
-			headerName: "Code postal",
-			type: "number",
-			width: 180,
+			field: "Action",
+			width: 200,
+			renderCell: (row) => {
+				const id = row.id;
+				return (
+					<div className="flex gap-4 pr-4">
+						<IconButton>
+							<CgEye />
+						</IconButton>
+						<IconButton
+							onClick={() => {
+								Delete(id as unknown as number);
+								refetch();
+							}}>
+							<BiTrash />
+						</IconButton>
+						<IconButton>
+							<BiPencil />
+						</IconButton>
+					</div>
+				);
+			},
 		},
 	];
 	return (
@@ -69,6 +93,14 @@ const Succursale = () => {
 					</div>
 				</div>
 			</Dialog>
+			{isLoading && (
+				<div className="flex justify-center animate-spin">
+					{" "}
+					<CgSpinner size={100} />{" "}
+				</div>
+			)}
+			<div className="text-2xl font-bold my-5">Succursales</div>
+
 			<div className="my-5">
 				{isSuccess && (
 					<DataGrid

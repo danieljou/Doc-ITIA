@@ -107,3 +107,13 @@ def assurance_detail(request, pk):
     elif request.method == 'DELETE':
         assurance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def dash_api(request):
+    data = {}
+    data['ass'] = Assurance.objects.count()
+    data['clients'] = Client.objects.count()
+    data['succ'] = Succursale.objects.count()
+    
+    return Response(data)

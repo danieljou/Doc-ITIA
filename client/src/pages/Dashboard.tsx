@@ -1,9 +1,18 @@
 /** @format */
 
+import { useEffect } from "react";
 import { BiHome, BiMoney, BiSolidDashboard, BiUser } from "react-icons/bi";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 
 const Dashboard = () => {
+	const isLogin = useAppSelector((app) => app.AuthSlice.isLogin);
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (isLogin == false) {
+			navigate("/");
+		}
+	}, []);
 	return (
 		<div>
 			<button
@@ -58,7 +67,7 @@ const Dashboard = () => {
 						</li>
 						<li>
 							<Link
-								to=""
+								to="assurances"
 								className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 								<BiMoney />
 								<span className="ms-3">Assurance</span>

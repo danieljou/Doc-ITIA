@@ -3,17 +3,17 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
 	useDeleteClientMutation,
-	useGetClientsQuery,
+	useGetAssuranceQuery,
 } from "../store/api/MainApi";
-import { Client, Client as SS } from "../interfaces/mainInterfaces";
+import { Client, Assurance as SS } from "../interfaces/mainInterfaces";
 import { Dialog, IconButton } from "@mui/material";
 import { useState } from "react";
 import ClientForm from "../components/ClientForm";
 import { CgClose, CgCloseR, CgEye, CgSpinner } from "react-icons/cg";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import ClientEditForm from "../components/ClientEditForm";
-const Clients = () => {
-	const { data, isSuccess, isLoading, refetch } = useGetClientsQuery();
+const Asssurences = () => {
+	const { data, isSuccess, isLoading, refetch } = useGetAssuranceQuery();
 	const [Delete] = useDeleteClientMutation();
 	const [isOpp, setisOpp] = useState(false);
 	const [selected, setSelected] = useState<number | null>(null);
@@ -27,61 +27,61 @@ const Clients = () => {
 			width: 150,
 		},
 		{
-			field: "prenom",
-			headerName: "Prénom",
+			field: "client",
+			headerName: "client",
 			width: 150,
 		},
 		{
-			field: "adresse",
-			headerName: "adresse",
+			field: "date_debut",
+			headerName: "date debut",
 			width: 150,
 		},
 		{
-			field: "pays",
-			headerName: "pays",
+			field: "date_fin",
+			headerName: "date fin",
 			width: 110,
 		},
 		{
-			field: "telephone",
-			headerName: "Télephone",
+			field: "prime",
+			headerName: "prime",
 			width: 180,
 		},
 		{
-			field: "email",
-			headerName: "Email",
+			field: "statut",
+			headerName: "statut",
 			width: 200,
 		},
 
-		{
-			field: "Action",
-			width: 200,
-			renderCell: (row) => {
-				const id = row.id;
+		// {
+		// 	field: "Action",
+		// 	width: 200,
+		// 	renderCell: (row) => {
+		// 		const id = row.id;
 
-				return (
-					<div className="flex gap-4 pr-4">
-						<IconButton
-							onClick={() => {
-								Delete(id as unknown as number);
-								refetch();
-							}}>
-							<BiTrash />
-						</IconButton>
-						<IconButton
-							onClick={() => {
-								setisOpp(true);
-								setSelected(row.row.id as number);
-								console.log(row.row.id);
-							}}>
-							<BiPencil />
-						</IconButton>
-						<IconButton>
-							<CgEye />
-						</IconButton>
-					</div>
-				);
-			},
-		},
+		// 		return (
+		// 			<div className="flex gap-4 pr-4">
+		// 				<IconButton
+		// 					onClick={() => {
+		// 						Delete(id as unknown as number);
+		// 						refetch();
+		// 					}}>
+		// 					<BiTrash />
+		// 				</IconButton>
+		// 				<IconButton
+		// 					onClick={() => {
+		// 						setisOpp(true);
+		// 						setSelected(row.row.id as number);
+		// 						console.log(row.row.id);
+		// 					}}>
+		// 					<BiPencil />
+		// 				</IconButton>
+		// 				<IconButton>
+		// 					<CgEye />
+		// 				</IconButton>
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 	];
 	return (
 		<div>
@@ -128,8 +128,7 @@ const Clients = () => {
 					<CgSpinner size={100} />{" "}
 				</div>
 			)}
-			<div className="text-2xl font-bold my-5">Clients</div>
-
+			<div className="text-2xl font-bold my-5">Assurances</div>
 			<div className="my-5">
 				{isSuccess && (
 					<DataGrid
@@ -152,4 +151,4 @@ const Clients = () => {
 	);
 };
 
-export default Clients;
+export default Asssurences;

@@ -40,6 +40,11 @@ export interface LoginInformations {
 	username: string;
 	password: string;
 }
+export interface Dash {
+	ass: string;
+	clients: string;
+	succ: string;
+}
 
 export interface UserSateAndAuthResponse {
 	token: Token;
